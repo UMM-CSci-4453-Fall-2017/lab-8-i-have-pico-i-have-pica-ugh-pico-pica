@@ -31,7 +31,10 @@ function ButtonCtrl($scope,buttonApi){
   function buttonClick($event){
      $scope.errorMessage='';
      buttonApi.clickButton($event.target.id)
-        .success(function(){})
+        .success(function(//put a variable here that will contain the result of clickButton
+	){
+  	//put what you want the button to do here
+  })
         .error(function(){$scope.errorMessage="Unable click";});
   }
   refreshButtons();  //make sure the buttons are loaded
