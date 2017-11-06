@@ -24,7 +24,7 @@ app.get("/buttons",function(req,res){
 app.get("/click",function(req,res){
   	var id = req.param('id');
   	var sql = 'SELECT prices from prices where id = '+id;
-  	var item_info;
+//  	var item_info;
 
 	console.log("Attempting sql ->"+sql+"<-");
 
@@ -34,7 +34,7 @@ app.get("/click",function(req,res){
     				if(err){console.log("We have an insertion error:");
         	     			console.log(err);}
     	 			res.send(err); // Let the upstream guy know how it went
-				item_info = rows[0][prices];
+//				item_info = rows[0][prices];
 
 	  		}})(res));
 			
@@ -42,5 +42,14 @@ app.get("/click",function(req,res){
 		}]);
 });
 // Your other API handlers go here!
+app.get("/user",function(req,res){
+	var userID = req.param('userID');
+	var sql = 'SELECT * FROM XaiMarsh.Lab8_User where userID = '+userID;
+	connection.query(sql,(function(res){return function(err,rows,fields){
+		if(err){console.log("We have an error:");
+			console.log(err);}
+		res.send(rows);
+	}})(res));
 
+});
 app.listen(port);

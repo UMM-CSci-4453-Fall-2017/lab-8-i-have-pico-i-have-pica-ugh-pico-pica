@@ -54,4 +54,3 @@ function buttonApi($http,apiUrl){
     }
  };
 }
-
