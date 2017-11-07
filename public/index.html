@@ -10,9 +10,13 @@
 <body ng-app="buttons">
 <div class="container-fluid">
     <h1>Cash Register (with buttons)</h1>
-    <div id="buttons" ng-controller="buttonCtrl" >
+    <div id="buttons" ng-controller="buttonCtrl">
        <div ng-repeat="button in buttons">
-         <div style="position:absolute;left:{{button.left}}px;top:{{button.top}}px"><button id="{{button.buttonID}}" ng-click="buttonClick($event);" >{{button.label}}</button></div>
+               <div style="position:absolute;left:{{button.left}}px;top:{{button.top}}px">
+                       <button type="button"id="{{button.buttonID}}" ng-click="buttonClick($event);">
+                               {{button.label}}
+                       </button>
+               </div>
        </div>
        <div style="position:fixed;height:50px;bottom:0px;left:0px;right:0px;margin-bottom:0px"} ng-show="errorMessage != ''">
           <div class="col-sm-12">
@@ -22,13 +26,14 @@
      </div>
 </div>
 <div class="container-fluid">
-	<h1>Current Transaction</h1>
-	<div id="transaction" ng-controller="transactionCtrl" >
-		<div ng-repeat="item in transaction">
-			<div style="position:absolute;right:10px;top:{{item.top}}px"><button id="{{item.id}}" ng-click="buttonClick($event);" >{{item.label}}</button>
-			</div>
-		</div>
-	</div>
+        <h1>Current Transaction</h1>
+        <div id="transaction" ng-controller="transactionCtrl" >
+                <div ng-repeat="item in transaction">
+                        <div style="position:absolute;right:10px;top:{{item.top}}px"><button id="{{item.id}}" ng-click="buttonClick($event);" >{{item.label}}</button>
+                        </div>
+                </div>
+        </div>
 </div>
 </body>
 </html>
+
