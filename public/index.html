@@ -25,7 +25,7 @@
 	<h1>Current Transaction</h1>
 	<div id="transaction" ng-controller="transactionCtrl" >
 		<div ng-repeat="item in transaction">
-			<div style="position:absolute;right:10px;top:{{item.top}}px"><button id="{{item.id}}" ng=click="buttonClick($event);" >{{item.label}}</button>
+			<div style="position:absolute;right:10px;top:{{item.top}}px"><button id="{{item.id}}" ng-click="buttonClick($event);" >{{item.label}}</button>
 			</div>
 		</div>
 	</div>
