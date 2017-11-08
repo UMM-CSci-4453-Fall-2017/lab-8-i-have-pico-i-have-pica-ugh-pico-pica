@@ -1,4 +1,4 @@
-https://github.com/UMM-CSci-4453-Fall-2017/lab-8-i-have-pico-i-have-pica-ugh-pico-picaangular.module('buttons',[])
+angular.module('buttons',[])
   .controller('buttonCtrl',ButtonCtrl)
   .factory('buttonApi',buttonApi)
   .constant('apiUrl','http://localhost:1337'); // CHANGED for the lab 2017!
