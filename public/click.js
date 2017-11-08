@@ -9,7 +9,7 @@ angular.module('buttons',[])
 
 
 function ButtonCtrl($scope,buttonApi){
-   $scope.currentPrice=0;
+   $scope.totalCost=totalCost;
    $scope.buttons=[]; //Initially all was still
    $scope.order=[];
    $scope.errorMessage='';
@@ -34,36 +34,46 @@ function ButtonCtrl($scope,buttonApi){
           $scope.errorMessage="Unable to load Buttons:  Database request failed";
           loading=false;
       });
- }
+  }
   function buttonClick($event){
      $scope.errorMessage='';
      buttonApi.clickButton($event.target.id)
-        .success(refreshItems)
+        .success(refreshItems($event.target.id))
         .error(function(){$scope.errorMessage="Unable to click";});
   }
-  function refreshItems(){
-    loading=true;
-    $scope.errorMessage='';
-    buttonApi.getItems()
-      .success(function(data){
-        $scope.order=data;
-        $scope.currentPrice=0;
-        data=data.map(function(item) {
-          var priceToBeAdded = (item.count * item.price).toFixed(2);
-          item.price = (item.price).toFixed(2);
-          $scope.currentPrice += priceToBeAdded;
-          return item;
-        });
-        $scope.currentPrice = ($scope.currentPrice).toFixed(2);
-        loading=false;
-      })
-      .error(function() {
-        $scope.errorMessage="Item load request failed!";
-        loading=false;
-      });
+  function refreshItems(id){ 
+ 	$scope.errorMessage='';
+	  var alreadyHasItem = false;
+	  for(items in $scope.order){
+		if(id == items.invID){
+			items.quantity++;
+			alreadyHasItem = true;
+		}
+	  }
+
+	  if(!alreadyHasItem){
+		  $scope.order.push({"buttonID":$scope.orderID,"invID":id,"quantity":1})
+	  }
+    
+  }
+  function totalCost(){
+	  var cost = 0;
+	for(items in $scope.order){
+		for(button in $scope.buttons){
+			if(items.invID == button.invID){
+				cost = cost + (items.quantity * button.prices);
+			}
+		}
+	}
+
+  }
+  function orderClick($event){
+	$scope.errorMessage='';
+	  
   }
   refreshButtons();  //make sure the buttons are loaded
-  refreshItems();
+  totalCost();
+	// refreshItems();
 
 }
 
@@ -73,10 +83,10 @@ function buttonApi($http,apiUrl){
       var url = apiUrl + '/buttons';
       return $http.get(url);
     },
-    getItems: function(id) {
-      var url = apiUrl + '/item='+id;
-      return $http.get(url);
-    },
+//    getItems: function(id) {
+//      var url = apiUrl + '/item='+id;
+//      return $http.get(url);
+//    },
     clickButton: function(id){
       var url = apiUrl+'/click?id='+id;
       return $http.post(url); // Easy enough to do this way
