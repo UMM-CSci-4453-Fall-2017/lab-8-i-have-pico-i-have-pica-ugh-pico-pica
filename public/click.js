@@ -1,4 +1,4 @@
-angular.module('buttons',[])
+https://github.com/UMM-CSci-4453-Fall-2017/lab-8-i-have-pico-i-have-pica-ugh-pico-picaangular.module('buttons',[])
   .controller('buttonCtrl',ButtonCtrl)
   .factory('buttonApi',buttonApi)
   .constant('apiUrl','http://localhost:1337'); // CHANGED for the lab 2017!
@@ -73,7 +73,7 @@ function buttonApi($http,apiUrl){
       var url = apiUrl + '/buttons';
       return $http.get(url);
     },
-    getItems: function() {
+    getItems: function(id) {
       var url = apiUrl + '/item='+id;
       return $http.get(url);
     },

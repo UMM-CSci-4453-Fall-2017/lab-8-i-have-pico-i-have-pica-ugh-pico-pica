@@ -12,11 +12,7 @@
     <h1>Cash Register (with buttons)</h1>
     <div id="buttons" ng-controller="buttonCtrl">
        <div ng-repeat="button in buttons">
-               <div style="position:absolute;left:{{button.left}}px;top:{{button.top}}px">
-                       <button type="button"id="{{button.buttonID}}" ng-click="buttonClick($event);">
-                               {{button.label}}
-                       </button>
-               </div>
+               <div style="position:absolute;left:{{button.left}}px;top:{{button.top}}px"><button type="button"id="{{button.buttonID}}" ng-click="buttonClick($event, button.buttonID);">{{button.label}}</button></div>
        </div>
        <div style="position:fixed;height:50px;bottom:0px;left:0px;right:0px;margin-bottom:0px"} ng-show="errorMessage != ''">
           <div class="col-sm-12">
@@ -25,6 +21,7 @@
        </div>
      </div>
 </div>
+<!--
 <div class="container-fluid">
         <h1>Current Transaction</h1>
         <div id="transaction" ng-controller="transactionCtrl" >
@@ -34,6 +31,7 @@
                 </div>
         </div>
 </div>
+-->
 </body>
 </html>
 
