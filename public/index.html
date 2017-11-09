@@ -25,7 +25,7 @@
 
         <div id="order">
                 <div ng-repeat="item in order">
-                        <div style="position:absolute;right:100px;top:{{item.top}}px"><button id="{{item.id}}" ng-click="orderClick($event);" >{{item.label}}</button>
+			<div style="position:absolute;right:100px;top:{{item.top}}px"><button type="button" id="{{item.invID}}" ng-click="removePurchase($event);" >{{item.label}}	{{item.quantity}}</button>
                         </div>
                 </div>
                 <div align="right" style="vertical-align: bottom;"> <h1> {{totalCost}} </h1> </div>

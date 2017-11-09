@@ -16,6 +16,8 @@ function ButtonCtrl($scope,buttonApi){
    $scope.isLoading=isLoading;
    $scope.refreshButtons=refreshButtons;
    $scope.buttonClick=buttonClick;
+   $scope.orderID = 0;
+   $scope.removePurchase=removePurchase;
 
    var loading = false;
 
@@ -70,6 +72,7 @@ function ButtonCtrl($scope,buttonApi){
 
 	  if(!alreadyHasItem){
 		  $scope.order.push({"buttonID":$scope.orderID,"invID":target.id,"quantity":1,"prices":newItemPrice,"label":newItemLabel,"top":(($scope.order.length)*100)+150})
+		  $scope.orderID++;
 	  }
     
   }
@@ -84,13 +87,27 @@ function ButtonCtrl($scope,buttonApi){
 	}
 
   }
-  function orderClick($event){
+  function removePurchase($event){
+	  console.log("hey");
 	$scope.errorMessage='';
+	for (items in $scope.order) {
+		console.log("items: "+items);
+		console.log("eti: "+$event.target.id);
+		if ($scope.order[items].invID == $event.target.id) {
+			$scope.order[items].quantity--;
+			if ($scope.order[items].quantity == 0)
+			{
+				$scope.order.splice(items, 1);
+			}
+		}
+	}
+	
+	
 	  
   }
   refreshButtons();  //make sure the buttons are loaded
   totalCost();
-	// refreshItems();
+	// refreshItems()
 
 }
 
