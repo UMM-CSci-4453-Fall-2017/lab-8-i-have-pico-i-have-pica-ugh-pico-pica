@@ -18,6 +18,7 @@ function ButtonCtrl($scope,buttonApi){
    $scope.buttonClick=buttonClick;
    $scope.orderID = 0;
    $scope.removePurchase=removePurchase;
+   $scope.voidTransaction=voidTransaction;
 
    var loading = false;
 
@@ -101,9 +102,11 @@ function ButtonCtrl($scope,buttonApi){
 			}
 		}
 	}
-	
-	
-	  
+  }
+
+  function voidTransaction() {
+	$scope.order = [];
+	  $scope.orderID = 0;
   }
   refreshButtons();  //make sure the buttons are loaded
   totalCost();
