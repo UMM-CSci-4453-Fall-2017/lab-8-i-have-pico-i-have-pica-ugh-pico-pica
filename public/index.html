@@ -21,12 +21,23 @@
            <h3 class="text-danger">{{errorMessage}}</h3>
          </div>
        </div>
+	<div class="container-fluid" align="right">
+
+        <div id="order">
+                <div ng-repeat="item in order">
+                        <div style="position:absolute;right:100px;top:{{item.top}}px"><button id="{{item.id}}" ng-click="orderClick($event);" >{{item.label}}</button>
+                        </div>
+                </div>
+                <div align="right" style="vertical-align: bottom;"> <h1> {{totalCost}} </h1> </div>
+        </div>
+</div>
+
      </div>
 </div>
 	<div style="position: absolute"> <h1>Cash Register</h1></div>
 	<div align="right"> <h1>Current Transaction</h1></div>
 
-<div class="container-fluid" align="right">
+<!--<div class="container-fluid" align="right">
 
         <div id="order" ng-controller="buttonCtrl" >
                 <div ng-repeat="item in order">
@@ -35,7 +46,7 @@
                 </div>
 		<div align="right" style="vertical-align: bottom;"> <h1> {{totalCost}} </h1> </div>
         </div>
-</div>
+</div> -->
 
 </body>
 </html>

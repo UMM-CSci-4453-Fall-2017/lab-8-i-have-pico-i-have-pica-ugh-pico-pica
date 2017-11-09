@@ -22,26 +22,26 @@ app.get("/buttons",function(req,res){
      res.send(rows);
   }})(res));
 });
-app.get("/click",function(req,res){
-  	var id = req.param('id');
-  	var sql = 'SELECT prices from prices where id = '+id;
+//app.get("/click",function(req,res){
+//  	var id = req.param('id');
+//  	var sql = 'SELECT prices from prices where id = '+id;
 //  	var item_info;
 
-	console.log("Attempting sql ->"+sql+"<-");
+//	console.log("Attempting sql ->"+sql+"<-");
 
-	async.series([
-		function(callback){
-			connection.query(sql,(function(res){return function(err,rows,fields){
-    				if(err){console.log("We have an insertion error:");
-        	     			console.log(err);}
-    	 			res.send(err); // Let the upstream guy know how it went
+//	async.series([
+//		function(callback){
+//			connection.query(sql,(function(res){return function(err,rows,fields){
+  //  				if(err){console.log("We have an insertion error:");
+    //    	     			console.log(err);}
+    //	 			res.send(err); // Let the upstream guy know how it went
 //				item_info = rows[0][prices];
-
-	  		}})(res));
-			
-			callback();
-		}]);
-});
+//
+//	  		}})(res));
+//			
+//			callback();
+//		}]);
+//});
 // Your other API handlers go here!
 app.get("/user",function(req,res){
 	var userID = req.param('userID');

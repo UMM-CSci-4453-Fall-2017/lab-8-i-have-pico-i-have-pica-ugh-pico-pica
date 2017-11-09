@@ -37,22 +37,39 @@ function ButtonCtrl($scope,buttonApi){
   }
   function buttonClick($event){
      $scope.errorMessage='';
-     buttonApi.clickButton($event.target.id)
-        .success(refreshItems($event.target.id))
-        .error(function(){$scope.errorMessage="Unable to click";});
+	refreshItems($event.target);
+    // buttonApi.clickButton($event.target.id)
+      //  .success(refreshItems($event.target.id))
+        //.error(function(){$scope.errorMessage="Unable to click";});
   }
-  function refreshItems(id){ 
+  function refreshItems(target){ 
  	$scope.errorMessage='';
 	  var alreadyHasItem = false;
+	  console.log("This is target's stuff: " + target.id);
+
 	  for(items in $scope.order){
-		if(id == items.invID){
-			items.quantity++;
+		if(target.id == $scope.order[items].invID){
+			$scope.order[items].quantity++;
 			alreadyHasItem = true;
+			console.log("quantity: "+$scope.order[items].quantity);
 		}
 	  }
 
+	  var newItemPrice;
+	  var newItemLabel;
+	  for(button in $scope.buttons){
+		  console.log("buttonID at this point is: "+button.buttonID);
+		  console.log("button looks like: " + button);
+		if((target.id-1) == button){
+			newItemPrice = $scope.buttons[button].prices;
+			newItemLabel = $scope.buttons[button].label;
+		}
+	  }
+	  console.log("at this point nip = "+newItemPrice);
+	  console.log("at this point nil = "+newItemLabel);
+
 	  if(!alreadyHasItem){
-		  $scope.order.push({"buttonID":$scope.orderID,"invID":id,"quantity":1})
+		  $scope.order.push({"buttonID":$scope.orderID,"invID":target.id,"quantity":1,"prices":newItemPrice,"label":newItemLabel,"top":(($scope.order.length)*100)+150})
 	  }
     
   }
