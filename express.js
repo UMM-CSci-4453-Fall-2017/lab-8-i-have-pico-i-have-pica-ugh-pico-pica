@@ -45,7 +45,7 @@ app.get("/buttons",function(req,res){
 // Your other API handlers go here!
 app.get("/user",function(req,res){
 	var userID = req.param('userID');
-	var sql = 'SELECT * FROM XaiMarsh.Lab8_User where userID = '+userID;
+	var sql = 'SELECT * FROM XaiMarsh.Lab8_User';
 	connection.query(sql,(function(res){return function(err,rows,fields){
 		if(err){console.log("We have an error:");
 			console.log(err);}
