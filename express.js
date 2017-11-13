@@ -85,8 +85,7 @@ app.get("/update",function(req,res){
 					console.log(err);}
 				res.send(err);
 				callback();
-			}
-			}));
+			}})(res));
 		}
 	]);
 });

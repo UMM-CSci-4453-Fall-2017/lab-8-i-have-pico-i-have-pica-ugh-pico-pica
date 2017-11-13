@@ -3,11 +3,6 @@ angular.module('register',[])
   .factory('registerApi',registerApi)
   .constant('apiUrl','http://localhost:1337'); // CHANGED for the lab 2017!
 
-//Helpful links
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
-//https://www.w3schools.com/jsref/jsref_tofixed.asp
-
-
 function RegisterCtrl($scope,registerApi){
    $scope.totalCost=totalCost;
    $scope.buttons=[]; //Initially all was still
@@ -45,7 +40,8 @@ function RegisterCtrl($scope,registerApi){
           loading=false;
       });
   }
-  
+ 
+  //gets the list of cashiers from the database
   function refreshUsers(){
     loading=true;
     $scope.errorMessage='';
@@ -59,22 +55,16 @@ function RegisterCtrl($scope,registerApi){
           loading=false;
       });
   }
-  
+ 
+  //checks credentials against the list of allowed users to let 
   function personLoggedIn() {
 	$scope.errorMessage='';
 	  refreshUsers();
-	  var loggedIn = false;
-	  console.log("checkpoint 1");
+	  var loggedIn = false; 
 	for (usernames in $scope.users)
 	  {
-
-	//	console.log($scope.users);
-	//	console.log($scope.users[usernames].Firstname);
-	//	console.log($scope.firstname);
-		console.log("checkpoint 2");
 		if ($scope.users[usernames].Firstname == $scope.firstname && $scope.users[usernames].Lastname == $scope.lastname)
 		  {
-			  console.log("checkpoint 3");
 			$scope.personLoggedIn = $scope.firstname + " " + $scope.lastname;
 			  loggedIn = true;
 		  }
@@ -84,10 +74,8 @@ function RegisterCtrl($scope,registerApi){
 		$scope.personLoggedIn = "No One";
 	  }
   }
-  function logIn() {
-	
-  }
 
+	//if a button is clicked that isn't a special case, it will perform it's intended action
   function buttonClick($event){
      $scope.errorMessage='';
 	  if($event.target.id == -1){
@@ -99,6 +87,7 @@ function RegisterCtrl($scope,registerApi){
       //  .success(refreshItems($event.target.id))
         //.error(function(){$scope.errorMessage="Unable to click";});
   }
+  //updates the order by adding new items if needed, or updating the quantity of existing items
   function refreshItems(target){ 
  	$scope.errorMessage='';
 	  var alreadyHasItem = false;
@@ -128,12 +117,12 @@ function RegisterCtrl($scope,registerApi){
 	  }
    	  totalCost(); 
   }
+	//calculates the total cost and formats it to 2 decimal places
   function totalCost(){
 	  var cost = 0;
 	for(items in $scope.order){
 		for(button in $scope.buttons){
-			if(items.invID == button.invID){
-				console.log(cost);
+			if(items.invID == button.invID){	
 				cost = cost + ($scope.order[items].quantity * $scope.buttons[button].prices);
 			}
 		}
@@ -144,6 +133,7 @@ function RegisterCtrl($scope,registerApi){
   function itemCost(){
 	//not implemented
   }
+	//removes an item if it's button is clicked in the current transaction area
   function removePurchase($event){
 
 	$scope.errorMessage='';
@@ -167,19 +157,28 @@ function RegisterCtrl($scope,registerApi){
 	  }
   	totalCost();
   }
+	//completes the transaction and sends its relevant information to the database (updating till_inventory's amount and adding rows to till_sales)
   function completeTransaction() {
 
 	  var didsomething = false;
 	for (item in $scope.order)
 	  {
-		didsomething = true;
-		registerApi.updateInventory($scope.order[item].invID, $scope.order[item].quantity,$scope.receiptNumber);
+		  didsomething = true;
+		registerApi.updateInventory($scope.order[item].invID, $scope.order[item].quantity,$scope.receiptNumber)
+			.success(function(data){
+ 	
+      			})
+		      .error(function () {
+          			$scope.errorMessage="Unable to load Users:  Database request failed";
+		      });
+
 	  }
 	  if(didsomething){
 		$scope.receiptNumber++;
 	  	voidTransaction();
 	  }
   }
+	//voids the current transaction
   function voidTransaction() {
 	$scope.order = [];
 	  $scope.orderID = 0;
@@ -187,9 +186,8 @@ function RegisterCtrl($scope,registerApi){
   }
   
 	refreshButtons();  //make sure the buttons are loaded
-  	refreshUsers();
-	totalCost();
-	// refreshItems()
+  	refreshUsers();  //make sure the users are loaded
+	totalCost();  //make sure the total cost is initialized
 
 }
 
@@ -199,10 +197,6 @@ function registerApi($http,apiUrl){
       var url = apiUrl + '/buttons';
       return $http.get(url);
     },
-//    getItems: function(id) {
-//      var url = apiUrl + '/item='+id;
-//      return $http.get(url);
-//    },
     clickButton: function(id){
       var url = apiUrl+'/click?id='+id;
       return $http.post(url); // Easy enough to do this way
