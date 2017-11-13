@@ -53,4 +53,41 @@ app.get("/user",function(req,res){
 	}})(res));
 
 });
+app.get("/update",function(req,res){
+	var invID = req.param('invID');
+	var quantity = req.param('quantity');
+	var receiptNumber = req.param('receiptNumber');
+	var sql = 'insert into XaiMarsh.till_sales values('+receiptNumber+', '+invID+', '+quantity+')';
+	var newQuantity = 0;
+
+	async.series([
+		function(callback){
+			connection.query(sql, function(err,row,fields){
+				if(err){console.log("We have an error:");
+					console.log(err);}
+				callback();
+			});
+		},
+		function(callback){
+			sql = 'select amount from XaiMarsh.till_inventory where id='+invID;
+			connection.query(sql, function(err,row,fields){
+				if (err) {console.log("We have an error:");
+					console.log(err);}	
+				newQuantity = row[0].amount - quantity;
+				callback();
+			});
+
+		},
+		function(callback){
+			sql = 'update XaiMarsh.till_inventory set amount='+newQuantity+' where id='+invID;
+			connection.query(sql, (function(res){return function(err,rows,fields){
+				if(err){console.log("We have an error:");
+					console.log(err);}
+				res.send(err);
+				callback();
+			}
+			}));
+		}
+	]);
+});
 app.listen(port);

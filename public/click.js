@@ -19,13 +19,13 @@ function RegisterCtrl($scope,registerApi){
    $scope.buttonClick=buttonClick;
    $scope.orderID = 0;
    $scope.removePurchase=removePurchase;
+   $scope.completeTransaction=completeTransaction;
    $scope.voidTransaction=voidTransaction;
    $scope.personLoggedIn=personLoggedIn;
    $scope.firstname="";
-   $scope.firstname_final;
    $scope.lastname="";
-   $scope.lastname_final;
    $scope.finalCost=0;
+   $scope.receiptNumber=1;
 
    var loading = false;
 
@@ -167,7 +167,19 @@ function RegisterCtrl($scope,registerApi){
 	  }
   	totalCost();
   }
+  function completeTransaction() {
 
+	  var didsomething = false;
+	for (item in $scope.order)
+	  {
+		didsomething = true;
+		registerApi.updateInventory($scope.order[item].invID, $scope.order[item].quantity,$scope.receiptNumber);
+	  }
+	  if(didsomething){
+		$scope.receiptNumber++;
+	  	voidTransaction();
+	  }
+  }
   function voidTransaction() {
 	$scope.order = [];
 	  $scope.orderID = 0;
@@ -198,10 +210,11 @@ function registerApi($http,apiUrl){
     getUsers: function(){
       var url = apiUrl + '/user';
       return $http.get(url);
-    }
-    // deleteTransaction: function(id) {
-    //   var url = apiUrl + '/click?delete='+id;
-    //   return $http.delete(url);
-    // }
+    },
+    updateInventory: function(invID, quantity, receiptNumber)
+	  {
+		var url = apiUrl + '/update?invID='+invID+'&quantity='+quantity+'&receiptNumber='+receiptNumber;
+		return $http.get(url);
+	  }
  };
 }

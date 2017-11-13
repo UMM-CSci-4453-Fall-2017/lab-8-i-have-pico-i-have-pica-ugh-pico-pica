@@ -7,7 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular.min.js"></script>
     <script src="click.js"></script>
 </head>
-<body ng-app="register">
+<body ng-app="register" style="background-color:#808080">
 <div class="container-fluid">
   
     <div id="buttons" ng-controller="registerCtrl">
@@ -32,7 +32,10 @@
 	</div>
 	</div>
 	<div style="position:absolute;right:50%;top:90%">
-		<button type="button" ng-click="voidTransaction();"> Void Transaction </button>
+		<button type="button" style="width:100%;background-color:green;color:white" ng-click="completeTransaction();"> Complete Transaction </button>
+		<br>
+		<br>
+		<button type="button" style="width:100%;background-color:red;color:white;" ng-click="voidTransaction();"> Void Transaction </button>
 	</div>
 	<div id="users" style="position:absolute;left:5%;bottom:5%">
 		{{personLoggedIn}}
