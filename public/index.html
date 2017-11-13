@@ -25,32 +25,42 @@
 
         <div id="order">
                 <div ng-repeat="item in order">
-			<div style="position:absolute;right:100px;top:{{item.top}}px"><button type="button" id="{{item.invID}}" ng-click="removePurchase($event);" >{{item.label}}	{{item.quantity}}</button>
+			<div style="position:absolute;right:100px;top:{{item.top}}px"><button type="button" id="{{item.invID}}" ng-click="removePurchase($event);" >{{item.label}}:	{{item.quantity}}</button>
                         </div>
                 </div>
-                <div align="right" style="vertical-align: bottom;"> <h1> {{totalCost}} </h1> </div>
+		<div align="right" style="position:absolute;right:5%;bottom:5%;"> <h1> ${{totalCost}} </h1> </div>
 	</div>
 	</div>
 	<div style="position:absolute;right:50%;top:90%">
 		<button type="button" ng-click="voidTransaction();"> Void Transaction </button>
 	</div>
+	<div id="users" style="position:absolute;left:5%;bottom:5%">
+		{{personLoggedIn}}
+		<br> First name:<br>
+                        <input type="text" ng-model='firstname'>
+                        <br>
+                        Last name:<br>
+                         <input type="text" ng-model='lastname'>
+                         <br>
+			 <button type="button" id="-1" ng-click="buttonClick($event);"> Log In </button>
+
+        <div/>
+
      </div>
 </div>
 	<div style="position: absolute"> <h1>Cash Register</h1></div>
 	<div align="right"> <h1>Current Transaction</h1></div>
 
-	<div style="position:absolute;left:5%;bottom:5%"> {{personLoggedIn}} 
-		<form >
+<!--	<div style="position:absolute;left:5%;bottom:5%"> {{personLoggedIn}} 
  			 First name:<br>
-  			<input type="text" name="firstname">
+  			<input type="text" ng-model='firstname' name="firstname">
   			<br>
   			Last name:<br>
- 			 <input type="text" name="lastname">		
- 			 <br><br>
-		 	 <input type="submit" value="Submit">
-		</form>  	
-			<button type="button" ng-click="logIn()"> Log In </button>
-	<div/>
+ 			 <input type="text" ng-model='lastname' name="lastname">
+			 <br>
+			<button type="button" ng-click="personLoggedIn()"> {{personLoggedIn}} </button>
+
+			<div/> -->
 
 <!--<div class="container-fluid" align="right">
 

@@ -21,10 +21,11 @@ function RegisterCtrl($scope,registerApi){
    $scope.removePurchase=removePurchase;
    $scope.voidTransaction=voidTransaction;
    $scope.personLoggedIn=personLoggedIn;
-   $scope.firstname;
+   $scope.firstname="";
    $scope.firstname_final;
-   $scope.lastname;
+   $scope.lastname="";
    $scope.lastname_final;
+   $scope.finalCost=0;
 
    var loading = false;
 
@@ -59,29 +60,41 @@ function RegisterCtrl($scope,registerApi){
       });
   }
   
-  function personLoggedIn(reqName) {
+  function personLoggedIn() {
 	$scope.errorMessage='';
+	  refreshUsers();
 	  var loggedIn = false;
+	  console.log("checkpoint 1");
 	for (usernames in $scope.users)
 	  {
-		if ($scope.users[usernames].Firstname = reqName)
+
+	//	console.log($scope.users);
+	//	console.log($scope.users[usernames].Firstname);
+	//	console.log($scope.firstname);
+		console.log("checkpoint 2");
+		if ($scope.users[usernames].Firstname == $scope.firstname && $scope.users[usernames].Lastname == $scope.lastname)
 		  {
-			$scope.personLoggedIn = reqName;
+			  console.log("checkpoint 3");
+			$scope.personLoggedIn = $scope.firstname + " " + $scope.lastname;
 			  loggedIn = true;
 		  }
 	  }
 
 	  if(!loggedIn){
-		$scope.personLoggedIn = "no one";
+		$scope.personLoggedIn = "No One";
 	  }
   }
   function logIn() {
-	$scope.firstname_final = $scope.firstname;
+	
   }
 
   function buttonClick($event){
      $scope.errorMessage='';
-	refreshItems($event.target);
+	  if($event.target.id == -1){
+		personLoggedIn();
+	  } else {
+		refreshItems($event.target);
+	  }
     // registerApi.clickButton($event.target.id)
       //  .success(refreshItems($event.target.id))
         //.error(function(){$scope.errorMessage="Unable to click";});
@@ -113,18 +126,23 @@ function RegisterCtrl($scope,registerApi){
 		  $scope.order.push({"buttonID":$scope.orderID,"invID":target.id,"quantity":1,"prices":newItemPrice,"label":newItemLabel,"top":(($scope.order.length)*50)+150})
 		  $scope.orderID++;
 	  }
-    
+   	  totalCost(); 
   }
   function totalCost(){
 	  var cost = 0;
 	for(items in $scope.order){
 		for(button in $scope.buttons){
 			if(items.invID == button.invID){
-				cost = cost + (items.quantity * button.prices);
+				console.log(cost);
+				cost = cost + ($scope.order[items].quantity * $scope.buttons[button].prices);
 			}
 		}
 	}
+	$scope.totalCost = cost.toFixed(2);
 
+  }
+  function itemCost(){
+	//not implemented
   }
   function removePurchase($event){
 
@@ -147,11 +165,13 @@ function RegisterCtrl($scope,registerApi){
 			$scope.order[items].top=((items)*50)+150;
 		}
 	  }
+  	totalCost();
   }
 
   function voidTransaction() {
 	$scope.order = [];
 	  $scope.orderID = 0;
+	  totalCost();
   }
   
 	refreshButtons();  //make sure the buttons are loaded
